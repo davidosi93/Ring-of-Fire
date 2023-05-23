@@ -13,6 +13,7 @@
 
 .card-stack {
     position: relative;
+
     img {
         position: absolute;
         width: 120px;
@@ -22,6 +23,7 @@
 .top-card {
     cursor: pointer;
     transition: all 125ms ease-in-out;
+
     &:hover {
         transform: scale(1.1) translateY(-10px);
     }
@@ -64,4 +66,11 @@
     position: absolute;
     right: 125px;
     bottom: 50px;
+}
+
+.pin-bottom {
+    position: absolute;
+    bottom: 50px;
+    left: 100px;
+    right: 220px;
 }
