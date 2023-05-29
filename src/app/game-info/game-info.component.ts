@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, inject } from '@angular/core';
+import { Firestore, collection, getFirestore, doc, setDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-game-info',
@@ -24,7 +25,11 @@ export class GameInfoComponent implements OnInit, OnChanges {
 
   title = '';
   description = '';
-  @Input() card: string | any;
+  @Input() card!: string;
+  firestore: Firestore = inject(Firestore);
+  gamesCollection = collection(this.firestore, 'games');
+  gameId: string = '';
+  db = getFirestore();
 
   constructor() { }
 

@@ -1,9 +1,10 @@
 export class Game {
-    public players: string[] = [];
+    public player: string[] = [];
     public stack: string[] = [];
     public playedCards: string[] = [];
     public currentPlayer: number = 0;
     public currentCard: string | any = '';
+    public pickCardAnimation = false;
 
     constructor() {
         for (let i = 1; i < 14; i++) {
@@ -17,11 +18,12 @@ export class Game {
 
     public toJson() {
         return {
-            player: this.players,
+            player: this.player,
             stack: this.stack,
             playedCards: this.playedCards,
             currentPlayer: this.currentPlayer,
-            currentCard: this.currentCard
+            currentCard: this.currentCard,
+            pickCardAnimation: this.pickCardAnimation
         }
     }
 }

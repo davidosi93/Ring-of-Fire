@@ -17,8 +17,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
-  pickCardAnimation = false;
-  
+
   game!: Game;
   gameId: string | any = '';
   firestore: Firestore = inject(Firestore);
@@ -33,19 +32,23 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {
     this.newGame();
     this.route.params.subscribe((params) => {
-      console.log(params);
       this.gameId = params['id'];
       let docRef = doc(this.gameCollection, this.gameId);
       let game$ = docData(docRef);
       game$.subscribe((game: any) => {
         console.log('Game update:', game);
-        this.game.currentPlayer = game.currentPlayer;
-        this.game.playedCards = game.playedCards;
-        this.game.players = game.players;
-        this.game.stack = game.stack;
-        this.game.currentCard = game.currentCard;
+        this.setGameData(game);
       });
     });
+  }
+
+  setGameData(game: any) {
+    this.game.currentPlayer = game.currentPlayer;
+    this.game.playedCards = game.playedCards;
+    this.game.player = game.player;
+    this.game.stack = game.stack;
+    this.game.currentCard = game.currentCard;
+    this.game.pickCardAnimation = game.pickCardAnimation;
   }
 
   newGame() {
@@ -53,25 +56,25 @@ export class GameComponent implements OnInit {
   }
 
   takeCard() {
-    if (!this.pickCardAnimation && this.game.players.length > 1) {
+    if (!this.game.pickCardAnimation && this.game.player.length > 1) {
       this.game.currentCard = this.game.stack.pop();
-      console.log(this.game.currentCard);
-      this.pickCardAnimation = true;
+      this.saveGame();
+      this.game.pickCardAnimation = true;
       this.game.currentPlayer++;
-      this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
+      this.game.currentPlayer = this.game.currentPlayer % this.game.player.length;
       setTimeout(() => {
         this.game.playedCards.push(this.game.currentCard);
-        this.pickCardAnimation = false;
+        this.game.pickCardAnimation = false;
       }, 1000);
     }
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogAddPlayerComponent);
+    let dialogRef = this.dialog.open(DialogAddPlayerComponent);
 
     dialogRef.afterClosed().subscribe((name: string) => {
       if (name && name.length > 0) {
-        this.game.players.push(name);
+        this.game.player.push(name);
         this.saveGame();
       }
     });
