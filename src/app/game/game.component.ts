@@ -44,16 +44,22 @@ export class GameComponent implements OnInit {
   }
 
   setGameData(game: any) {
-    this.game.players = game.players;
-    this.game.stack = game.stack;
-    this.game.playedCards = game.playedCards;
-    this.game.currentPlayer = game.currentPlayer;
-    this.game.currentCard = game.currentCard;
-    this.game.pickCardAnimation = game.pickCardAnimation;
+    this.game.players = game.player || [];
+    this.game.stack = game.stack || [];
+    this.game.playedCards = game.playedCards || [];
+    this.game.currentPlayer = game.currentPlayer || 0;
+    this.game.currentCard = game.currentCard || '';
+    this.game.pickCardAnimation = game.pickCardAnimation || false;
   }
 
   newGame() {
     this.game = new Game();
+    this.game.players = [];
+    this.game.stack = [];
+    this.game.playedCards = [];
+    this.game.currentPlayer = 0;
+    this.game.currentCard = '';
+    this.game.pickCardAnimation = false;
   }
 
   takeCard() {

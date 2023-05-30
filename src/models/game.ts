@@ -16,7 +16,7 @@ export class Game {
         shuffle(this.stack);
     }
 
-    public toJson(): any {
+    public toJson() {
         return {
             players: this.players,
             stack: this.stack,
