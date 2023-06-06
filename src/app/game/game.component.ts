@@ -43,7 +43,6 @@ export class GameComponent implements OnInit {
   }
 
   setGameData(game: any) {
-    console.log(game);
     this.game.players = game.players;
     this.game.stack = game.stack;
     this.game.playedCards = game.playedCards;
@@ -76,7 +75,6 @@ export class GameComponent implements OnInit {
     dialogRef.afterClosed().subscribe((name: string) => {
       if (name && name.length > 0) {
         this.game.players.push(name);
-        console.log(this.game.players);
         this.saveGame();
       }
     });
