@@ -1,8 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Firestore, collection, collectionData, docData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { doc, setDoc, getDoc, getFirestore, addDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, addDoc, DocumentReference } from "firebase/firestore";
 import { ActivatedRoute } from '@angular/router';
 import { Game } from 'src/models/game';
 
@@ -11,23 +11,19 @@ import { Game } from 'src/models/game';
   templateUrl: './start-screen.component.html',
   styleUrls: ['./start-screen.component.scss']
 })
-export class StartScreenComponent implements OnInit {
-  constructor(private router: Router) { }
+export class StartScreenComponent {
+  
   firestore: Firestore = inject(Firestore);
   gameCollection = collection(this.firestore, 'games');
-  db = getFirestore();
+  game: Game;
 
-  ngOnInit(): void {
-
-  }
+  constructor(private router: Router) { }
 
   newGame() {
     //start new game
-    let game = new Game();
-    addDoc(this.gameCollection, { game: game.toJson() }).then((gameInfo: any) => {
+    this.game = new Game();
+    addDoc(this.gameCollection, this.game.toJson()).then((gameInfo: any) => {
       this.router.navigateByUrl('/game/' + gameInfo['id']);
-      console.log(gameInfo);
     });
-
   }
 }

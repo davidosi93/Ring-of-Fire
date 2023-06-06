@@ -3,7 +3,7 @@ export class Game {
     public stack: string[] = [];
     public playedCards: string[] = [];
     public currentPlayer: number = 0;
-    public currentCard: string | any = '';
+    public currentCard: string  = '';
     public pickCardAnimation = false;
 
     constructor() {

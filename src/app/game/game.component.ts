@@ -9,29 +9,28 @@ import { ActivatedRoute } from '@angular/router';
 
 
 
+
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
-
-  game!: Game;
-  gameId: string = '';
+  game: Game;
   firestore: Firestore = inject(Firestore);
   gameCollection = collection(this.firestore, 'games');
+  gameId: string = '';
   db = getFirestore();
 
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute) {
-
-  }
+  constructor(public dialog: MatDialog, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.newGame();
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params: any) => {
       this.getGameData(params);
-    });
+    })
+    
   }
 
   getGameData(params: any) {
@@ -44,22 +43,17 @@ export class GameComponent implements OnInit {
   }
 
   setGameData(game: any) {
-    this.game.players = game.player || [];
-    this.game.stack = game.stack || [];
-    this.game.playedCards = game.playedCards || [];
-    this.game.currentPlayer = game.currentPlayer || 0;
-    this.game.currentCard = game.currentCard || '';
-    this.game.pickCardAnimation = game.pickCardAnimation || false;
+    console.log(game);
+    this.game.players = game.players;
+    this.game.stack = game.stack;
+    this.game.playedCards = game.playedCards;
+    this.game.currentPlayer = game.currentPlayer;
+    this.game.currentCard = game.currentCard;
+    this.game.pickCardAnimation = game.pickCardAnimation;
   }
 
   newGame() {
     this.game = new Game();
-    this.game.players = [];
-    this.game.stack = [];
-    this.game.playedCards = [];
-    this.game.currentPlayer = 0;
-    this.game.currentCard = '';
-    this.game.pickCardAnimation = false;
   }
 
   takeCard() {
@@ -79,10 +73,10 @@ export class GameComponent implements OnInit {
 
   openDialog(): void {
     let dialogRef = this.dialog.open(DialogAddPlayerComponent);
-
     dialogRef.afterClosed().subscribe((name: string) => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        console.log(this.game.players);
         this.saveGame();
       }
     });
