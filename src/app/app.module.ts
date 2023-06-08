@@ -20,7 +20,9 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideDatabase,getDatabase } from '@angular/fire/database';
 import { provideFirestore } from '@angular/fire/firestore';
 import { getFirestore } from 'firebase/firestore';
-import 'firebase/firestore'
+import 'firebase/firestore';
+import { PlayerMobileComponent } from './player-mobile/player-mobile.component';
+import { EditPlayerComponent } from './edit-player/edit-player.component'
 
 
 
@@ -32,7 +34,9 @@ import 'firebase/firestore'
     GameComponent,
     PlayerComponent,
     DialogAddPlayerComponent,
-    GameInfoComponent
+    GameInfoComponent,
+    PlayerMobileComponent,
+    EditPlayerComponent
   ],
   imports: [
     BrowserModule,

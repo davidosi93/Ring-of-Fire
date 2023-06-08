@@ -4,10 +4,7 @@ import { Game } from 'src/models/game';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { Firestore, collection, doc, setDoc, getFirestore, docData } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
-
-
-
-
+import { EditPlayerComponent } from '../edit-player/edit-player.component';
 
 
 @Component({
@@ -21,6 +18,7 @@ export class GameComponent implements OnInit {
   gameCollection = collection(this.firestore, 'games');
   gameId: string = '';
   db = getFirestore();
+  gameOver = false;
 
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute) { }
@@ -30,7 +28,7 @@ export class GameComponent implements OnInit {
     this.route.params.subscribe((params: any) => {
       this.getGameData(params);
     })
-    
+
   }
 
   getGameData(params: any) {
@@ -44,6 +42,7 @@ export class GameComponent implements OnInit {
 
   setGameData(game: any) {
     this.game.players = game.players;
+    this.game.playerImages = game.playerImages;
     this.game.stack = game.stack;
     this.game.playedCards = game.playedCards;
     this.game.currentPlayer = game.currentPlayer;
@@ -56,7 +55,9 @@ export class GameComponent implements OnInit {
   }
 
   takeCard() {
-    if (!this.game.pickCardAnimation && this.game.players.length > 1) {
+    if (this.game.stack.length == 0) {
+      this.gameOver = true;
+    } else if (!this.game.pickCardAnimation && this.game.players.length > 1) {
       this.game.currentCard = this.game.stack.pop();
       this.game.pickCardAnimation = true;
       this.game.currentPlayer++;
@@ -70,11 +71,31 @@ export class GameComponent implements OnInit {
     }
   }
 
+
   openDialog(): void {
     let dialogRef = this.dialog.open(DialogAddPlayerComponent);
     dialogRef.afterClosed().subscribe((name: string) => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        this.game.playerImages.push('player_1.png');
+        this.saveGame();
+      }
+    });
+  }
+
+  editPlayer(playerId: number) {
+    console.log('Edit player', playerId);
+    let dialogRef = this.dialog.open(EditPlayerComponent);
+
+    dialogRef.afterClosed().subscribe((change: string) => {
+      console.log('Recieved change', change);
+      if (change) {
+        if (change == 'DELETE') {
+          this.game.playerImages.splice(playerId, 1);
+          this.game.players.splice(playerId, 1);
+        } else {
+          this.game.playerImages[playerId] = change;
+        }
         this.saveGame();
       }
     });
