@@ -33,3 +33,5 @@
 <button *ngIf="!gameOver" (click)="openDialog()" mat-fab color="primary" class="btn-add">
     <mat-icon>add</mat-icon>
 </button>
+
+<img class="pre-load-image" src="assets/img/cards/{{ game.stack[game.stack.length -1] }}.png">

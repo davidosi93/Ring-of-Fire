@@ -71,7 +71,6 @@ export class GameComponent implements OnInit {
     }
   }
 
-
   openDialog(): void {
     let dialogRef = this.dialog.open(DialogAddPlayerComponent);
     dialogRef.afterClosed().subscribe((name: string) => {
